@@ -39,8 +39,8 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span style="flex: auto"></span>
-  <button mat-button routerLink="/admin/home">Home</button>
-  <button mat-button routerLink="/admin/profile">Profile</button>
+  <button mat-button routerLink="/home">Home</button>
+  <button mat-button routerLink="/profile">Profile</button>
   <button  mat-button [matMenuTriggerFor]="importMenu">
     <mat-icon>arrow_downward</mat-icon>
     Import
@@ -52,29 +52,26 @@
   <button mat-button >
 
   </button>
-  <button mat-button mat-raised-button color="accent" >Logout</button>
+  <button mat-button mat-raised-button color="accent"  (click)="onLogout()">Logout</button>
 </mat-toolbar>
 
 <mat-drawer-container>
   <mat-drawer #MyDrawer opened="true" mode="side" position="start">
     <mat-list>
       <mat-list-item>
-        <button mat-button routerLink="/admin/dashboard">
+        <button mat-button routerLink="/dashboard">
           <mat-icon>dashboard</mat-icon>
           Dashboard
         </button>
       </mat-list-item>
 
       <mat-list-item>
-        <button mat-button routerLink="/admin/payments">
+        <button mat-button routerLink="/products">
           <mat-icon>payment</mat-icon>
           Product
         </button>
 
       </mat-list-item>
-
-
-
 
     </mat-list>
   </mat-drawer>

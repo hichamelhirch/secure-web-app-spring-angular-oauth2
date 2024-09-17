@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -20,17 +20,44 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardModule, MatCardTitle} fro
 import { MatTableModule} from "@angular/material/table";
 import {HttpClientModule} from "@angular/common/http";
 import {MatSort, MatSortModule} from "@angular/material/sort";
+import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { ProfileComponent } from './profile/profile.component';
+
+
+
+
+function initializeKeycloak(keycloak: KeycloakService) {
+  return () =>
+    keycloak.init({
+      config: {
+        url: 'http://localhost:8081',
+        realm: 'ecom-web-app',
+        clientId: 'front-end-angular-client'
+      },
+      initOptions: {
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri:
+          window.location.origin + '/assets/silent-check-sso.html'
+      }
+    });
+}
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    AllProductsComponent
+    AllProductsComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
+    BrowserAnimationsModule,
     HttpClientModule,
+    KeycloakAngularModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
@@ -53,7 +80,12 @@ import {MatSort, MatSortModule} from "@angular/material/sort";
 
   ],
   providers: [
-    provideAnimationsAsync()
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
+    }
   ],
   bootstrap: [AppComponent]
 })
